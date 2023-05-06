@@ -8,7 +8,11 @@ import {
   Keyboard,
   Platform,
 } from 'react-native';
-import Input, { ReturnKeyTypes, keyboardTypes } from '../components/input';
+import Input, {
+  ReturnKeyTypes,
+  iconNames,
+  keyboardTypes,
+} from '../components/input';
 import SafeInputView from '../components/SafeInputView';
 import { useState } from 'react';
 
@@ -31,6 +35,7 @@ const SignInScreen = () => {
           placeholder={'your@email.com'}
           keyboardType={keyboardTypes.EMAIL}
           returnKeyType={ReturnKeyTypes.NEXT}
+          iconName={iconNames.EMAIL}
         />
         <Input
           value={password}
@@ -38,6 +43,7 @@ const SignInScreen = () => {
           title={'password'}
           secureTextEnrty
           placeholderTextColor={'red'}
+          iconName={iconNames.PASSWORD}
         />
       </View>
     </SafeInputView>

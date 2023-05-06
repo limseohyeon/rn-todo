@@ -2,6 +2,7 @@ import { TextInput, View, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import { BLACK, GRAY, PRIMARY } from '../color';
 import { useState } from 'react';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export const keyboardTypes = {
   DEFAULT: 'default',
@@ -11,8 +12,19 @@ export const ReturnKeyTypes = {
   DONE: 'done',
   NEXT: 'next',
 };
+export const iconNames = {
+  EMAIL: 'email',
+  PASSWORD: 'lock',
+};
 
-const Input = ({ title, placeholder, value, onChangeText, ...props }) => {
+const Input = ({
+  title,
+  placeholder,
+  value,
+  onChangeText,
+  iconName,
+  ...props
+}) => {
   const [isFocused, setInputFocused] = useState(false);
 
   return (
@@ -27,24 +39,45 @@ const Input = ({ title, placeholder, value, onChangeText, ...props }) => {
         {title}
       </Text>
 
-      <TextInput
-        {...props}
-        value={value}
-        onChangeText={onChangeText}
-        style={[
-          styles.input,
-          value && styles.hasValueInput,
-          isFocused && styles.focusedInput,
-        ]}
-        placeholder={placeholder ?? title}
-        placeholderTextColor={GRAY.DEFAULT}
-        autoCapitalize="none"
-        autoCorrect={false}
-        textContentType={'none'}
-        keyboardAppearance="light"
-        onBlur={() => setInputFocused(false)}
-        onFocus={() => setInputFocused(true)}
-      />
+      <View>
+        <View style={styles.icon}>
+          <MaterialIcons
+            name={iconName}
+            size={20}
+            color={(() => {
+              switch (true) {
+                case isFocused:
+                  console.log('DEFAULT');
+                  return PRIMARY.DEFAULT;
+                case !!value:
+                  console.log('BLACK');
+                  return BLACK;
+                default:
+                  console.log('GRAY');
+                  return GRAY.DEFAULT;
+              }
+            })()}
+          />
+        </View>
+        <TextInput
+          {...props}
+          value={value}
+          onChangeText={onChangeText}
+          style={[
+            styles.input,
+            value && styles.hasValueInput,
+            isFocused && styles.focusedInput,
+          ]}
+          placeholder={placeholder ?? title}
+          placeholderTextColor={GRAY.DEFAULT}
+          autoCapitalize="none"
+          autoCorrect={false}
+          textContentType={'none'}
+          keyboardAppearance="light"
+          onBlur={() => setInputFocused(false)}
+          onFocus={() => setInputFocused(true)}
+        />
+      </View>
     </View>
   );
 };
@@ -59,6 +92,7 @@ Input.propTypes = {
   keyboardType: PropTypes.oneOf(Object.values(keyboardTypes)),
   returnKeyType: PropTypes.oneOf(Object.values(ReturnKeyTypes)),
   secureTextEnrty: PropTypes.bool,
+  iconName: PropTypes.oneOf(Object.values(iconNames)),
 };
 
 const styles = StyleSheet.create({
@@ -85,10 +119,17 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderColor: GRAY.DEFAULT,
     height: 42,
+    paddingLeft: 30,
   },
   hasValueInput: {
     borderColor: BLACK,
     color: BLACK,
+  },
+  icon: {
+    position: 'absolute',
+    left: 8,
+    height: '100%',
+    justifyContent: 'center',
   },
 });
 
