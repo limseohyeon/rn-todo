@@ -1,15 +1,27 @@
 import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
-import { GRAY, PRIMARY, WHITE } from '../color';
+import { DANGER, GRAY, PRIMARY, WHITE } from '../color';
 
-const Button = ({ title, onPress, disabled, isLoading }) => {
+//PRIMARY에 color에 존재하는 PRIMARY 대표어로 할당
+export const ButtonTypes = {
+  PRIMARY: 'PRIMARY',
+  DANGER: 'DANGER',
+};
+
+const Button = ({ title, onPress, disabled, isLoading, buttonType }) => {
+  const colors = { PRIMARY, DANGER }; //colors에는 PRIMARY 와 DANGER가 key로 존재함 결과 아래와 같이 동작
+  // colors={
+  //   PRIMARY : { LIGHT:'', DEFAULT:'', DART:''}
+  //   DANGER : {...}
+  // } PRIMARY 와 DANGER의 값을 갖게 됨
   return (
     <Pressable
       onPress={onPress}
       style={({ pressed }) => [
         styles.container,
-        pressed && { backgroundColor: PRIMARY.DARK },
-        disabled && { backgroundColor: PRIMARY.LIGHT },
+        { backgroundColor: colors[buttonType].DEFAULT },
+        pressed && { backgroundColor: colors[buttonType].DARK },
+        disabled && { backgroundColor: colors[buttonType].LIGHT },
       ]}
       disabled={disabled}
     >
@@ -22,12 +34,17 @@ const Button = ({ title, onPress, disabled, isLoading }) => {
     </Pressable>
   );
 };
+//기본값을 PRIMARY설정
+Button.defaultProps = {
+  buttonType: ButtonTypes.PRIMARY,
+};
 
 Button.propTypes = {
   title: PropTypes.string.isRequired,
   onPress: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   isLoading: PropTypes.bool,
+  buttonType: PropTypes.oneOf(Object.values(ButtonTypes)),
 };
 
 const styles = StyleSheet.create({
