@@ -17,29 +17,36 @@ import SafeInputView from '../components/SafeInputView';
 import { useEffect, useRef, useState } from 'react';
 import Button from '../components/Button';
 import { signIn } from '../api/auth';
+import { Alert } from 'react-native';
+import propTypes from 'prop-types';
 
-const SignInScreen = () => {
+const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const passwordRef = useRef('null');
+  const passwordRef = useRef(null);
   const [disabled, setDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setDisabled(!email || !password);
   }, [email, password]);
-  //변수 전달!!
+
   const onSubmit = async () => {
-    if (!disabled) {
+    if (!disabled && !isLoading) {
       Keyboard.dismiss();
-      setIsLoading(true); //signIn함수가 실행되는 동안 true
+      setIsLoading(true);
       try {
-        const data = await signIn(email, password);
-        console.log(data);
+        await signIn(email, password);
+        setIsLoading(false);
+        navigation.navigate('List');
       } catch (e) {
-        console.log(e);
+        Alert.alert('SignIn Failed', e, [
+          {
+            text: 'OK',
+            onPress: () => setIsLoading(false),
+          },
+        ]);
       }
-      setIsLoading(false); //signIn 함수 끝나면 false
     }
   };
   return (
@@ -81,6 +88,10 @@ const SignInScreen = () => {
       </View>
     </SafeInputView>
   );
+};
+
+SignInScreen.propTypes = {
+  navigation: propTypes.object,
 };
 
 const styles = StyleSheet.create({
