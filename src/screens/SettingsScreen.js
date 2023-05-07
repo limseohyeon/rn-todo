@@ -2,7 +2,6 @@ import { View } from 'react-native';
 import { StyleSheet, Text } from 'react-native';
 import Button, { ButtonTypes } from '../components/Button';
 import { useUserContext } from '../ccontexts/UserContext';
-import { DANGER } from '../color';
 
 const SettingScreen = () => {
   const { setUser } = useUserContext();

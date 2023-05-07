@@ -1,19 +1,8 @@
-import { Button, StyleSheet, Text, View } from 'react-native';
+import EmptyList from '../components/EmptyList';
+import List from '../components/List';
 
 const ListScreen = () => {
-  return (
-    <View style={styles.container}>
-      <Text style={{ fontSize: 30 }}>ListScreen</Text>
-    </View>
-  );
+  const todos = [];
+  return todos.length ? <List /> : <EmptyList />;
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
-
 export default ListScreen;

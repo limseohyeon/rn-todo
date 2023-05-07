@@ -5,13 +5,12 @@ import Input, {
   keyboardTypes,
 } from '../components/input';
 import SafeInputView from '../components/SafeInputView';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from '../components/Button';
 import { signIn } from '../api/auth';
 import { Alert } from 'react-native';
-import propTypes from 'prop-types';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import UserContext, { useUserContext } from '../ccontexts/UserContext';
+import { useUserContext } from '../ccontexts/UserContext';
 
 const SignInScreen = () => {
   const [email, setEmail] = useState('');
@@ -32,7 +31,6 @@ const SignInScreen = () => {
       setIsLoading(true);
       try {
         const data = await signIn(email, password);
-        setIsLoading(false);
         setUser(data);
       } catch (e) {
         Alert.alert('SignIn Failed', e, [
@@ -85,11 +83,6 @@ const SignInScreen = () => {
     </SafeInputView>
   );
 };
-
-SignInScreen.propTypes = {
-  navigation: propTypes.object,
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
