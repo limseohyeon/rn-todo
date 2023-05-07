@@ -19,8 +19,9 @@ import Button from '../components/Button';
 import { signIn } from '../api/auth';
 import { Alert } from 'react-native';
 import propTypes from 'prop-types';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const SignInScreen = ({ navigation }) => {
+const SignInScreen = ({ navigation, setUser }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const passwordRef = useRef(null);
@@ -36,9 +37,9 @@ const SignInScreen = ({ navigation }) => {
       Keyboard.dismiss();
       setIsLoading(true);
       try {
-        await signIn(email, password);
+        const data = await signIn(email, password);
         setIsLoading(false);
-        navigation.navigate('List');
+        setUser(data);
       } catch (e) {
         Alert.alert('SignIn Failed', e, [
           {
@@ -51,7 +52,7 @@ const SignInScreen = ({ navigation }) => {
   };
   return (
     <SafeInputView>
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <Image
           source={require('../../assets/main.png')}
           style={styles.image}
@@ -85,7 +86,7 @@ const SignInScreen = ({ navigation }) => {
             isLoading={isLoading}
           />
         </View>
-      </View>
+      </SafeAreaView>
     </SafeInputView>
   );
 };
