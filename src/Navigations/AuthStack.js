@@ -13,13 +13,11 @@ const AuthStack = (props) => {
     >
       <Stack.Screen
         name={'SignIn'}
-        // component={SignInScreen}
+        component={SignInScreen}
         options={{
           headerShown: false,
         }}
-      >
-        {(screenProps) => <SignInScreen {...screenProps} {...props} />}
-      </Stack.Screen>
+      ></Stack.Screen>
     </Stack.Navigator>
   );
 };
